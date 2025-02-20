@@ -7,6 +7,14 @@ public class WordInfo
     public string morph_info { get; set; }
     public string syntax_role { get; set; }
 
+    public WordInfo(string word, string lemma, string morph_info, string syntax_role)
+    {
+        this.word = word;
+        this.lemma = lemma;
+        this.morph_info = morph_info;
+        this.syntax_role = syntax_role;
+    }
+
     public override string ToString()
     {
         return $"Word: {word}, Lemma: {lemma}, Morph Info: {morph_info}, Syntax Role: {syntax_role}";

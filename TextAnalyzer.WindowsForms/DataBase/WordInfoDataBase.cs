@@ -1,20 +1,51 @@
 ﻿using System.Text.Json;
 
-namespace TextAnalyzer.WindowsForms.DataBase;
+namespace TextAnalyzer.WindowsForms;
 
-public class WordInfoList
+
+//Паттерн <<Singleton>>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+
+public class WordInfoDataBase
 {
-    private HashSet<WordInfo> words;
+    public static WordInfoDataBase instance;
 
-    public WordInfoList(HashSet<WordInfo> initialWords = null)
+    // Объявляем событие
+    public event EventHandler WordsChanged;
+
+    private WordInfoDataBase(HashSet<WordInfo> initialWords = null)
     {
         words = initialWords ?? new HashSet<WordInfo>();
     }
+
+    private WordInfoDataBase() { }
+
+    public static WordInfoDataBase GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new WordInfoDataBase();
+            instance.words = new HashSet<WordInfo>();
+        }
+        return instance;
+    }
+
+    public static void SubscribeToWordsChanged(EventHandler handler)
+    {
+        GetInstance().WordsChanged += handler;
+    }
+
+
+    private HashSet<WordInfo> words;
 
     // Метод для добавления нового слова
     public void AddWord(WordInfo word)
     {
         words.Add(word);
+        OnWordsChanged(); // Вызываем событие после добавления слова
     }
 
     // Метод для удаления слова
@@ -24,6 +55,7 @@ public class WordInfoList
         if (wordToRemove != null)
         {
             words.Remove(wordToRemove);
+            OnWordsChanged(); // Вызываем событие после удаления слова
             return true;
         }
         return false;
@@ -37,6 +69,7 @@ public class WordInfoList
         {
             words.Remove(existingWord); // Сначала удаляем старое слово
             words.Add(updatedWord);      // Затем добавляем обновлённое
+            OnWordsChanged(); // Вызываем событие после изменения слова
             return true;
         }
         return false;
@@ -55,30 +88,40 @@ public class WordInfoList
         return JsonSerializer.Serialize(this.words.ToList(), options); // Сериализуем в список
     }
 
-    // Статический метод для десериализации списка слов из JSON
-    public static WordInfoList FromJson(string json)
+    // Статический метод для десериализации списка слов из JSON и обновления существующего экземпляра
+    public static void FromJson(string json)
     {
         try
         {
             List<WordInfo> wordList = JsonSerializer.Deserialize<List<WordInfo>>(json);
-            return new WordInfoList(new HashSet<WordInfo>(wordList));
+            var instance = GetInstance(); // Получаем текущий экземпляр
+            instance.words.Clear(); // Очищаем текущий список слов
+            foreach (var word in wordList)
+            {
+                instance.words.Add(word); // Добавляем слова из JSON
+            }
+            instance.OnWordsChanged(); // Оповещаем об изменении списка
         }
         catch (JsonException ex)
         {
             // Обработка ошибок десериализации JSON
             Console.WriteLine($"Ошибка десериализации JSON: {ex.Message}");
-            return new WordInfoList();
         }
         catch (Exception ex)
         {
             // Обработка любых других исключений
             Console.WriteLine($"Произошла ошибка: {ex.Message}");
-            return new WordInfoList();
         }
     }
 
     public override string ToString()
     {
         return string.Join(Environment.NewLine, words.Select(w => w.ToString()));
+    }
+
+    // Метод для вызова события
+    protected virtual void OnWordsChanged()
+    {
+        WordsChanged?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -4,13 +4,37 @@ namespace TextAnalyzer.WindowsForms;
 
 public class PythonScriptRunner
 {
+    private static PythonScriptRunner _instance;
+    private static readonly object _lock = new object();
+
     private readonly string _scriptPath;
     private readonly string _pythonPath;
 
-    public PythonScriptRunner(string scriptPath, string pythonPath)
+    private PythonScriptRunner()
     {
-        _scriptPath = scriptPath;
-        _pythonPath = pythonPath;
+        string workingDirectory = Environment.CurrentDirectory;
+        string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+        string pythonScriptPath = projectDirectory + "\\Python\\TextAnalizerScript.py";
+
+        _scriptPath = pythonScriptPath;
+
+        _pythonPath = "C:\\Users\\Volodya\\AppData\\Local\\Programs\\Python\\Python312\\python.exe";// "C:\\Python312\\python.exe";
+
+    }
+
+    public static PythonScriptRunner GetInstance()
+    {
+        if (_instance == null)
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new PythonScriptRunner();
+                }
+            }
+        }
+        return _instance;
     }
 
     public string ExecuteScript(bool fromPdf,string inputText)

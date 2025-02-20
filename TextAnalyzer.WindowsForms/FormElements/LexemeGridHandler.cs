@@ -1,12 +1,8 @@
-﻿using TextAnalyzer.WindowsForms.DataBase;
-
-namespace TextAnalyzer.WindowsForms.FormElements;
-
+﻿namespace TextAnalyzer.WindowsForms.FormElements;
 
 internal class LexemeGridHandler
 {
     private readonly DataGridView _dataGridView;
-    private List<WordInfo> _sortedData;
 
     public LexemeGridHandler(DataGridView dataGridView)
     {
@@ -24,11 +20,6 @@ internal class LexemeGridHandler
         _dataGridView.Columns["syntax_role"].DataPropertyName = "syntax_role";
         _dataGridView.Columns["morph_info"].DataPropertyName = "morph_info";
         //_dataGridView.AutoGenerateColumns = false;
-    }
-
-    public void LoadData(WordInfoList report)
-    {
-        _dataGridView.DataSource = report.GetSortedWords();
         ConfigureUI();
     }
 

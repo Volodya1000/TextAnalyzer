@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextAnalyzer.Lib", "TextAnalyzer.Lib\TextAnalyzer.Lib.csproj", "{8F4BAC0D-DA0E-4BD3-9893-BFCE5B3389E2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{4331C816-C6F3-49EC-ACB4-70C63B7AD213}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextAnalyzer.WindowsForms", "TextAnalyzer.WindowsForms\TextAnalyzer.WindowsForms.csproj", "{A2B0D4EF-0D32-4A54-BB04-51F46105E0FD}"
 EndProject
 Global
@@ -15,14 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8F4BAC0D-DA0E-4BD3-9893-BFCE5B3389E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F4BAC0D-DA0E-4BD3-9893-BFCE5B3389E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F4BAC0D-DA0E-4BD3-9893-BFCE5B3389E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F4BAC0D-DA0E-4BD3-9893-BFCE5B3389E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4331C816-C6F3-49EC-ACB4-70C63B7AD213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4331C816-C6F3-49EC-ACB4-70C63B7AD213}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4331C816-C6F3-49EC-ACB4-70C63B7AD213}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4331C816-C6F3-49EC-ACB4-70C63B7AD213}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2B0D4EF-0D32-4A54-BB04-51F46105E0FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2B0D4EF-0D32-4A54-BB04-51F46105E0FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2B0D4EF-0D32-4A54-BB04-51F46105E0FD}.Release|Any CPU.ActiveCfg = Release|Any CPU

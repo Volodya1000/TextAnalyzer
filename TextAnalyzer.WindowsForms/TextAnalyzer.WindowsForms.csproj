@@ -12,8 +12,4 @@
     <PackageReference Include="itext7" Version="9.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TextAnalyzer.Lib\TextAnalyzer.Lib.csproj" />
-  </ItemGroup>
-
 </Project>

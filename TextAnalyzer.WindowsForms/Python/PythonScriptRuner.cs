@@ -37,12 +37,16 @@ public class PythonScriptRunner
         return _instance;
     }
 
-    public string ExecuteScript(bool fromPdf,string inputText)
+    public (string result,long scriptRunTime)ExecuteScript(bool fromPdf, string inputText)
     {
+        // Создаем экземпляр Stopwatch для замера времени
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start(); // Запускаем таймер
+
         ProcessStartInfo start = new ProcessStartInfo
         {
             FileName = _pythonPath,
-            Arguments = $"{_scriptPath} {(fromPdf?1:2)} {inputText}",
+            Arguments = $"{_scriptPath} {(fromPdf ? 1 : 2)} {inputText}",
             UseShellExecute = false,
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
@@ -52,33 +56,14 @@ public class PythonScriptRunner
 
         using (Process process = Process.Start(start))
         {
-           
             // Чтение вывода скрипта
             using (StreamReader reader = process.StandardOutput)
             {
-                return reader.ReadToEnd();
-            }
-        }
-    }
+                string output = reader.ReadToEnd();
+                stopwatch.Stop(); // Останавливаем таймер
 
-    public string GetErrors()
-    {
-        ProcessStartInfo start = new ProcessStartInfo
-        {
-            FileName = _pythonPath,
-            Arguments = $"{_scriptPath}",
-            UseShellExecute = false,
-            RedirectStandardInput = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true
-        };
 
-        using (Process process = Process.Start(start))
-        {
-            using (StreamReader errorReader = process.StandardError)
-            {
-                return errorReader.ReadToEnd();
+                return (output, stopwatch.ElapsedMilliseconds);
             }
         }
     }

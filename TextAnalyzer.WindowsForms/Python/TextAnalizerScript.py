@@ -133,7 +133,7 @@ def analyze_text(text):
                 morph_info = token.feats
                 syntax_role = token.rel
 
-                morph_info_str = ", ".join(translator.translate_morph({key: value})[key] for key, value in morph_info.items()) if morph_info else ""
+                morph_info_str = " , ".join(translator.translate_morph({key: value})[key] for key, value in morph_info.items()) if morph_info else ""
 
                 syntax_role_str = translator.translate_syntax(syntax_role)
 

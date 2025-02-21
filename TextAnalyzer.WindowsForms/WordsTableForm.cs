@@ -1,11 +1,12 @@
-﻿using System.Windows.Forms;
+﻿using System.Data;
+using System.Windows.Forms;
 using TextAnalyzer.WindowsForms.FormElements;
 namespace TextAnalyzer.WindowsForms;
 
 public partial class WordsTableForm : Form
 {
     private DataGridView dataGridViewLexemes;
-    private RowAdder rowAdder;
+    private LeftPanelController rowAdder;
     private CustomMenuStrip customMenuStrip;
 
     private readonly LexemeGridHandler _gridHandler;
@@ -13,7 +14,6 @@ public partial class WordsTableForm : Form
     public WordsTableForm()
     {
         InitializeComponent();
-
         this.WindowState = FormWindowState.Maximized;
 
         // Устанавливаем режим автоматического изменения размеров для формы
@@ -24,9 +24,16 @@ public partial class WordsTableForm : Form
         _gridHandler = new LexemeGridHandler(dataGridViewLexemes);
         dataGridViewLexemes.Dock = DockStyle.Fill; // Растягиваем на оставшуюся часть формы
 
+
+        //_paginator=new DataGridViewPaginator(dataGridViewLexemes);
+
+
         // Инициализация RowAdder и установка DataGridView
-        rowAdder = new RowAdder ();
+        rowAdder = new LeftPanelController();
         rowAdder.Dock = DockStyle.Fill; // Растягиваем на оставшуюся часть своей панели
+
+
+        _gridHandler.SubscribeToWordSelected(rowAdder.SetTextBoxes);
 
         // Создаем TableLayoutPanel для размещения RowAdder и DataGridView
         TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
@@ -40,7 +47,10 @@ public partial class WordsTableForm : Form
 
         // Добавляем элементы в TableLayoutPanel
         tableLayoutPanel.Controls.Add(rowAdder, 0, 0); // RowAdder в первой колонке
+        //tableLayoutPanel.Controls.Add(dataGridViewLexemes, 1, 0); // DataGridView во второй колонке
         tableLayoutPanel.Controls.Add(dataGridViewLexemes, 1, 0); // DataGridView во второй колонке
+
+
 
         // Добавляем TableLayoutPanel на форму
         this.Controls.Add(tableLayoutPanel);
@@ -53,14 +63,23 @@ public partial class WordsTableForm : Form
         this.Controls.Add(customMenuStrip.GetMenuStrip());
 
 
+        WordInfoStorage.SubscribeToWordsChanged(UpdateDataGridView);
 
-        WordInfoDataBase.SubscribeToWordsChanged(UpdateDataGridView);
+
     }
+
+
 
     private void UpdateDataGridView(object sender, EventArgs e)
     {
         // Получаем отсортированный список слов и отображаем его в DataGridView
         dataGridViewLexemes.DataSource = null; // Сбрасываем источник данных
-        dataGridViewLexemes.DataSource = WordInfoDataBase.GetInstance().GetSortedWords(); // Получаем данные из Singleton
+        dataGridViewLexemes.DataSource = WordInfoStorage.GetInstance().GetWords(); // Получаем данные из Singleton
+        _gridHandler.ConfigureColumsHeaders();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+
     }
 }

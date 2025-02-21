@@ -10,6 +10,7 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new WordsTableForm());
+        Application.Run(new  WordsTableForm());
     }
 }
+

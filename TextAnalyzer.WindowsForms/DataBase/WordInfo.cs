@@ -2,10 +2,10 @@
 
 public class WordInfo
 {
-    public string word { get; set; }
-    public string lemma { get; set; }
-    public string morph_info { get; set; }
-    public string syntax_role { get; set; }
+    public string word { get; set; } = string.Empty;
+    public string lemma { get; set; } = string.Empty;
+    public string morph_info { get; set; } = string.Empty;
+    public string syntax_role { get; set; } = string.Empty;
 
     public WordInfo(string word, string lemma, string morph_info, string syntax_role)
     {

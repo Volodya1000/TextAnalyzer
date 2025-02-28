@@ -46,4 +46,24 @@ public class JsonFileHandler
             throw new InvalidOperationException($"{ex.Message}", ex);
         }
     }
+
+    public static void DeleteFile(string filePath)
+    {
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                Console.WriteLine($"Файл {filePath} успешно удален.");
+            }
+            else
+            {
+                Console.WriteLine($"Файл {filePath} не найден.");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка при удалении файла {filePath}: {ex.Message}");
+        }
+    }
 }

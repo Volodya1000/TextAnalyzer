@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
 using System.Text.RegularExpressions;
 namespace TextAnalyzer.WindowsForms;
 
@@ -114,8 +113,6 @@ public class WordInfoStorage
         return false;
     }
 
-
-
     public List<WordInfo> GetWords()
     {
         IEnumerable<WordInfo> result = words;
@@ -202,6 +199,5 @@ public class WordInfoStorage
     {
         WordsChanged?.Invoke(this, EventArgs.Empty);
     }
-
    
 }

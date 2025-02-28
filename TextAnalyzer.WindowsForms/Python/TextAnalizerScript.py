@@ -9,6 +9,7 @@ from natasha import (
 import json
 import sys
 import fitz  # используется библиотека PyMuPDF для чтения pdf файлов
+import os
 
 
 class RussianTranslator:
@@ -127,26 +128,27 @@ def analyze_text(text):
 
     for sent in doc.sents:
         for token in sent.tokens:
-            if token.pos != 'PUNCT':
-                token.lemmatize(morph_vocab)
-                lemma = token.lemma
-                morph_info = token.feats
-                syntax_role = token.rel
+            if token.pos != 'PUNCT' and not any(char.isdigit() for char in token.text if not char.isalpha() and char not in ['№', '°', '%', '$', '€', '₽']):
+                if all('а' <= char.lower() <= 'я' or char == 'ё' or not char.isalpha() for char in token.text):
+                    # Проверка на наличие только русских букв или не-буквенных символов
+                    token.lemmatize(morph_vocab)
+                    lemma = token.lemma
+                    morph_info = token.feats
+                    syntax_role = token.rel
 
-                morph_info_str = " , ".join(translator.translate_morph({key: value})[key] for key, value in morph_info.items()) if morph_info else ""
+                    morph_info_str = " , ".join(translator.translate_morph({key: value})[key] for key, value in morph_info.items()) if morph_info else ""
 
-                syntax_role_str = translator.translate_syntax(syntax_role)
+                    syntax_role_str = translator.translate_syntax(syntax_role)
 
-                word_data = {
-                    "word": token.text.lower(),
-                    "lemma": lemma,
-                    "morph_info": morph_info_str,
-                    "syntax_role": syntax_role_str
-                }
-                words_data.append(word_data)
+                    word_data = {
+                        "word": token.text.lower(),
+                        "lemma": lemma,
+                        "morph_info": morph_info_str,
+                        "syntax_role": syntax_role_str
+                    }
+                    words_data.append(word_data)
 
     return json.dumps(words_data, ensure_ascii=False, indent=4)
-
 
 def extract_text_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
@@ -176,4 +178,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     result_json = analyze_text(text)
-    print(result_json)
+    #print(result_json)
+
+    # Сохраняем результат в файл в директории скрипта
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, 'temp.json')
+
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(json.loads(result_json), f, ensure_ascii=False, indent=4)

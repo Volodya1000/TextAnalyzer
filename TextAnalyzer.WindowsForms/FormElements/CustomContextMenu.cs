@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using TextAnalyzer.WindowsForms.Services;
+﻿using TextAnalyzer.WindowsForms.Services;
 
 namespace TextAnalyzer.WindowsForms.FormElements;
 
@@ -252,10 +250,14 @@ internal class CustomMenuStrip
     private void ExecuteText(string fullPath)
     {
         var scryptResult = PythonScriptRunner.GetInstance().ExecuteScript(true, fullPath);
+
         string fileName = Path.GetFileName(fullPath);
         MessageBox.Show($"Скрипт анализа для текста { fileName.Substring(0, fileName.Length - 1) } выполнялся { scryptResult.scriptRunTime} милисекунд", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-        WordInfoStorage.FromJson(scryptResult.result);
+        string tempPath = "C:\\Users\\Volodya\\Documents\\C#\\LanguageInterfaces\\TextAnalyzer\\TextAnalyzer.WindowsForms\\Python\\temp.json";
+        JsonFileHandler.LoadFromFile(tempPath);
+
+        JsonFileHandler.DeleteFile(tempPath);
     }
 
     public MenuStrip GetMenuStrip()

@@ -36,18 +36,4 @@ public class WordInfo
                string.Equals(this.morph_info, other.morph_info, StringComparison.OrdinalIgnoreCase) &&
                string.Equals(this.syntax_role, other.syntax_role, StringComparison.OrdinalIgnoreCase);
     }
-
-    public override int GetHashCode()
-    {
-        // Генерируем HashCode на основе всех свойств
-        unchecked // Отключаем проверку переполнения для производительности
-        {
-            int hash = 17;
-            hash = hash * 23 + (word?.GetHashCode(StringComparison.OrdinalIgnoreCase) ?? 0);
-            hash = hash * 23 + (lemma?.GetHashCode(StringComparison.OrdinalIgnoreCase) ?? 0);
-            hash = hash * 23 + (morph_info?.GetHashCode(StringComparison.OrdinalIgnoreCase) ?? 0);
-            hash = hash * 23 + (syntax_role?.GetHashCode(StringComparison.OrdinalIgnoreCase) ?? 0);
-            return hash;
-        }
-    }
 }

@@ -25,9 +25,6 @@ public partial class WordsTableForm : Form
         dataGridViewLexemes.Dock = DockStyle.Fill; // Растягиваем на оставшуюся часть формы
 
 
-        //_paginator=new DataGridViewPaginator(dataGridViewLexemes);
-
-
         // Инициализация RowAdder и установка DataGridView
         rowAdder = new LeftPanelController();
         rowAdder.Dock = DockStyle.Fill; // Растягиваем на оставшуюся часть своей панели
@@ -50,8 +47,6 @@ public partial class WordsTableForm : Form
         //tableLayoutPanel.Controls.Add(dataGridViewLexemes, 1, 0); // DataGridView во второй колонке
         tableLayoutPanel.Controls.Add(dataGridViewLexemes, 1, 0); // DataGridView во второй колонке
 
-
-
         // Добавляем TableLayoutPanel на форму
         this.Controls.Add(tableLayoutPanel);
 
@@ -62,10 +57,7 @@ public partial class WordsTableForm : Form
         this.MainMenuStrip = customMenuStrip.GetMenuStrip();
         this.Controls.Add(customMenuStrip.GetMenuStrip());
 
-
         WordInfoStorage.SubscribeToWordsChanged(UpdateDataGridView);
-
-
     }
 
 
@@ -76,10 +68,5 @@ public partial class WordsTableForm : Form
         dataGridViewLexemes.DataSource = null; // Сбрасываем источник данных
         dataGridViewLexemes.DataSource = WordInfoStorage.GetInstance().GetWords(); // Получаем данные из Singleton
         _gridHandler.ConfigureColumsHeaders();
-    }
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-
     }
 }

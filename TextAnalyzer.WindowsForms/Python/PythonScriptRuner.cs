@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-
 namespace TextAnalyzer.WindowsForms;
 
 public class PythonScriptRunner
